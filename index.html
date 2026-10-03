@@ -1,0 +1,4274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aitihasik — Ancient India Adventure</title>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --parchment:#f4e5c2;
+    --parchment-light:#fff7df;
+    --ink:#382315;
+    --brown:#6d421f;
+    --dark-brown:#2e1b10;
+    --gold:#c99a3b;
+    --gold-light:#f1d27a;
+    --red:#7b3027;
+    --red-dark:#4d1e18;
+    --green:#405b38;
+    --shadow:0 12px 35px rgba(38,20,8,.28);
+}
+
+body{
+    min-height:100vh;
+    font-family:Georgia,"Times New Roman",serif;
+    color:var(--ink);
+
+    background:
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.18),transparent 25%),
+        radial-gradient(circle at 80% 70%,rgba(92,51,18,.12),transparent 30%),
+        linear-gradient(135deg,#d7bd83,#efe0b7 45%,#c9aa6d);
+
+    overflow-x:hidden;
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+
+/* =========================================================
+   ANCIENT DECORATION
+========================================================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:.12;
+
+    background-image:
+        radial-gradient(#3b2414 1px,transparent 1px);
+
+    background-size:22px 22px;
+    z-index:0;
+}
+
+.ancient-symbol{
+    position:absolute;
+    font-size:100px;
+    opacity:.05;
+    pointer-events:none;
+}
+
+.symbol-left{
+    left:2%;
+    top:15%;
+}
+
+.symbol-right{
+    right:2%;
+    bottom:10%;
+}
+
+
+/* =========================================================
+   START SCREEN
+========================================================= */
+
+#startScreen{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:25px;
+
+    background:
+        linear-gradient(rgba(45,25,13,.72),rgba(45,25,13,.82)),
+        radial-gradient(circle at center,#b78c47,#4c2d17);
+}
+
+.start-scroll{
+    width:min(850px,96vw);
+    max-height:94vh;
+    overflow:auto;
+
+    padding:45px 45px 38px;
+
+    background:
+        linear-gradient(90deg,
+            rgba(93,53,20,.12),
+            transparent 8%,
+            transparent 92%,
+            rgba(93,53,20,.12)
+        ),
+        var(--parchment);
+
+    border:8px double var(--brown);
+    box-shadow:
+        0 0 0 4px var(--gold-light),
+        0 25px 70px rgba(0,0,0,.45);
+
+    text-align:center;
+
+    position:relative;
+}
+
+.start-scroll::before,
+.start-scroll::after{
+    content:"❦";
+    position:absolute;
+    color:var(--gold);
+    font-size:38px;
+}
+
+.start-scroll::before{
+    top:12px;
+    left:20px;
+}
+
+.start-scroll::after{
+    bottom:8px;
+    right:20px;
+}
+
+.logo-symbol{
+    font-size:65px;
+    margin-bottom:4px;
+}
+
+.game-title{
+    font-size:clamp(42px,8vw,75px);
+    letter-spacing:7px;
+    color:var(--red-dark);
+    text-shadow:2px 2px 0 var(--gold-light);
+}
+
+.subtitle{
+    margin-top:4px;
+    font-size:18px;
+    letter-spacing:3px;
+    color:var(--brown);
+    text-transform:uppercase;
+}
+
+.ornament{
+    margin:20px auto;
+    width:280px;
+    max-width:80%;
+    height:2px;
+    background:var(--gold);
+    position:relative;
+}
+
+.ornament::before,
+.ornament::after{
+    content:"◆";
+    position:absolute;
+    top:-11px;
+    color:var(--gold);
+}
+
+.ornament::before{left:-5px}
+.ornament::after{right:-5px}
+
+.introduction{
+    max-width:700px;
+    margin:0 auto 25px;
+    line-height:1.75;
+    font-size:17px;
+}
+
+.introduction strong{
+    color:var(--red);
+}
+
+.goal-box{
+    max-width:700px;
+    margin:20px auto 28px;
+
+    padding:18px 22px;
+
+    border:1px solid var(--gold);
+    background:rgba(255,248,220,.65);
+
+    text-align:left;
+}
+
+.goal-box h3{
+    color:var(--red);
+    margin-bottom:7px;
+    text-align:center;
+}
+
+.goal-box p{
+    line-height:1.6;
+    font-size:15px;
+}
+
+.player-inputs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    max-width:650px;
+    margin:25px auto;
+}
+
+.input-card{
+    background:rgba(255,247,220,.8);
+    border:2px solid var(--gold);
+    padding:17px;
+}
+
+.input-card .token{
+    font-size:42px;
+    display:block;
+    margin-bottom:6px;
+}
+
+.input-card label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.input-card input{
+    width:100%;
+    padding:12px 13px;
+
+    border:1px solid #9b7437;
+    background:#fffaf0;
+    color:var(--ink);
+
+    font-size:16px;
+    outline:none;
+}
+
+.input-card input:focus{
+    border:2px solid var(--red);
+}
+
+.start-button{
+    border:none;
+    padding:15px 42px;
+
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:1px;
+
+    color:#fff8dc;
+    background:linear-gradient(#8e432e,#5d241b);
+
+    border:3px solid var(--gold-light);
+
+    cursor:pointer;
+
+    box-shadow:0 6px 0 #35140f;
+    transition:.15s;
+}
+
+.start-button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.start-button:active{
+    transform:translateY(4px);
+    box-shadow:0 2px 0 #35140f;
+}
+
+.error-message{
+    min-height:20px;
+    margin:10px 0;
+    color:#8d2119;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   MAIN GAME
+========================================================= */
+
+#gameScreen{
+    display:none;
+    position:relative;
+    z-index:1;
+
+    min-height:100vh;
+    padding:18px;
+}
+
+.game-container{
+    max-width:1500px;
+    margin:auto;
+}
+
+
+/* HEADER */
+
+.game-header{
+    background:
+        linear-gradient(90deg,#422316,#6d3d1d,#422316);
+
+    border:4px double var(--gold-light);
+
+    color:#fff2c7;
+
+    padding:13px 22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    box-shadow:var(--shadow);
+}
+
+.header-title{
+    font-size:clamp(25px,4vw,42px);
+    letter-spacing:4px;
+}
+
+.header-subtitle{
+    font-size:13px;
+    letter-spacing:2px;
+    opacity:.85;
+}
+
+.header-coin{
+    font-size:19px;
+    font-weight:bold;
+}
+
+
+/* PLAYER PANELS */
+
+.players{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:12px;
+    align-items:center;
+
+    margin:15px 0;
+}
+
+.player-card{
+    background:rgba(255,247,220,.94);
+
+    border:3px solid var(--gold);
+    padding:11px 16px;
+
+    box-shadow:0 5px 16px rgba(50,25,5,.18);
+
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.player-card.active{
+    border-color:var(--red);
+    box-shadow:0 0 0 3px rgba(123,48,39,.18),0 5px 16px rgba(50,25,5,.18);
+}
+
+.player-token{
+    font-size:39px;
+}
+
+.player-name{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.player-info{
+    font-size:13px;
+    margin-top:3px;
+}
+
+.turn-indicator{
+    padding:8px 13px;
+    background:#5c321b;
+    color:#ffe8a4;
+    border:2px solid var(--gold);
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   DYNASTY BANNER
+========================================================= */
+
+.dynasty-banner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    margin-bottom:12px;
+    border:3px double var(--gold-light);
+    box-shadow:0 5px 15px rgba(45,22,7,.2);
+}
+
+.dynasty-banner div{
+    padding:9px;
+    text-align:center;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.maurya-banner{
+    background:linear-gradient(#744124,#4b2716);
+    color:#f6d37d;
+}
+
+.shunga-banner{
+    background:linear-gradient(#53623d,#303d25);
+    color:#ead78e;
+}
+
+
+/* =========================================================
+   BOARD
+========================================================= */
+
+.board-frame{
+    padding:10px;
+
+    background:
+        linear-gradient(90deg,#6c411d,#a87b37,#6c411d);
+
+    border:5px solid #4b2915;
+
+    box-shadow:
+        inset 0 0 0 2px var(--gold-light),
+        var(--shadow);
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    gap:5px;
+
+    background:#4e2c17;
+    padding:5px;
+}
+
+.box{
+    min-height:125px;
+
+    position:relative;
+
+    padding:7px;
+
+    border:2px solid #8b682f;
+
+    background:
+        linear-gradient(rgba(255,248,220,.88),rgba(232,211,166,.92));
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    transition:.2s;
+}
+
+.box:hover{
+    transform:scale(1.015);
+    z-index:3;
+}
+
+.box.maurya{
+    background:
+        linear-gradient(rgba(247,227,186,.93),rgba(213,181,121,.88));
+}
+
+.box.shunga{
+    background:
+        linear-gradient(rgba(231,224,179,.93),rgba(184,190,133,.9));
+}
+
+.box.start,
+.box.finish{
+    background:
+        linear-gradient(145deg,#8b432c,#54241b);
+    color:#ffe9a5;
+    border-color:#e2bd62;
+}
+
+.box-number{
+    font-size:12px;
+    font-weight:bold;
+    opacity:.8;
+}
+
+.box-icon{
+    font-size:25px;
+    text-align:center;
+    margin:3px 0;
+}
+
+.box-title{
+    text-align:center;
+    font-size:12px;
+    line-height:1.2;
+    font-weight:bold;
+}
+
+.box-reward{
+    text-align:center;
+    font-size:11px;
+    color:#69451b;
+    font-weight:bold;
+}
+
+.start .box-reward,
+.finish .box-reward{
+    color:#ffe9a5;
+}
+
+.tokens{
+    position:absolute;
+    right:4px;
+    top:4px;
+
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+}
+
+.token{
+    font-size:22px;
+    filter:drop-shadow(1px 2px 1px rgba(0,0,0,.25));
+}
+
+.current-position{
+    outline:4px solid var(--red);
+    outline-offset:-4px;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls{
+    margin:15px auto;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:9px;
+}
+
+.dice{
+    width:80px;
+    height:80px;
+
+    background:#fff8e5;
+
+    border:5px solid #6d421f;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:39px;
+
+    box-shadow:
+        inset 0 0 0 3px #d9b766,
+        0 5px 10px rgba(0,0,0,.25);
+}
+
+.dice.rolling{
+    animation:diceRoll .65s ease;
+}
+
+@keyframes diceRoll{
+    0%{transform:rotate(0) scale(1)}
+    20%{transform:rotate(90deg) scale(1.12)}
+    40%{transform:rotate(180deg) scale(.9)}
+    60%{transform:rotate(270deg) scale(1.12)}
+    100%{transform:rotate(360deg) scale(1)}
+}
+
+.roll-button{
+    padding:13px 34px;
+
+    background:linear-gradient(#8c432e,#5b241a);
+    color:#fff2c7;
+
+    border:3px solid var(--gold-light);
+
+    font-weight:bold;
+    font-size:17px;
+
+    cursor:pointer;
+
+    box-shadow:0 5px 0 #34130e;
+}
+
+.roll-button:hover{
+    filter:brightness(1.1);
+}
+
+.roll-button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.status{
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    color:#4e2d17;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    background:rgba(30,15,7,.78);
+
+    z-index:2000;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-card{
+    width:min(760px,95vw);
+    max-height:92vh;
+    overflow:auto;
+
+    background:
+        linear-gradient(90deg,
+            rgba(116,70,27,.1),
+            transparent 8%,
+            transparent 92%,
+            rgba(116,70,27,.1)
+        ),
+        #f5e5bd;
+
+    border:7px double #6c411d;
+
+    box-shadow:
+        0 0 0 3px #d6ad57,
+        0 25px 80px rgba(0,0,0,.5);
+
+    padding:30px;
+
+    position:relative;
+}
+
+.modal-card::before{
+    content:"❦";
+    position:absolute;
+    top:8px;
+    left:15px;
+    font-size:27px;
+    color:#bd913d;
+}
+
+.modal-card::after{
+    content:"❦";
+    position:absolute;
+    bottom:4px;
+    right:15px;
+    font-size:27px;
+    color:#bd913d;
+}
+
+.modal-title{
+    text-align:center;
+    color:#67291f;
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.modal-subtitle{
+    text-align:center;
+    color:#7d5a2c;
+    font-size:13px;
+    letter-spacing:1px;
+    margin-bottom:17px;
+}
+
+.modal-icon{
+    text-align:center;
+    font-size:50px;
+    margin:4px;
+}
+
+.modal-content{
+    line-height:1.65;
+    font-size:16px;
+}
+
+.info-list{
+    padding-left:23px;
+}
+
+.info-list li{
+    margin-bottom:8px;
+}
+
+.more-section{
+    background:rgba(255,248,220,.7);
+    border:1px solid #b38a3c;
+    padding:15px;
+    margin-top:10px;
+}
+
+.reward-box{
+    margin:17px auto;
+    max-width:350px;
+
+    text-align:center;
+
+    padding:13px;
+
+    background:#ead098;
+    border:2px solid #9a712d;
+
+    font-weight:bold;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.modal-button{
+    padding:11px 22px;
+    border:2px solid #7a461f;
+    background:#6e321f;
+    color:#fff3c7;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.modal-button.secondary{
+    background:#d5b66c;
+    color:#3b2414;
+}
+
+.modal-button:hover{
+    filter:brightness(1.08);
+}
+
+
+/* =========================================================
+   MINI GAMES
+========================================================= */
+
+.game-area{
+    margin-top:12px;
+}
+
+.choice-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+
+.choice{
+    padding:13px;
+    background:#f9edce;
+    border:2px solid #a87a31;
+    cursor:pointer;
+    font-weight:bold;
+    color:#422717;
+}
+
+.choice:hover{
+    background:#ead39a;
+}
+
+.choice.correct{
+    background:#b7c79c;
+    border-color:#405b38;
+}
+
+.choice.wrong{
+    background:#dfb0a2;
+    border-color:#7b3027;
+}
+
+.game-message{
+    text-align:center;
+    min-height:25px;
+    margin-top:13px;
+    font-weight:bold;
+}
+
+.game-question{
+    font-size:18px;
+    text-align:center;
+    line-height:1.5;
+}
+
+
+/* PHOTO PUZZLE */
+
+.photo-note{
+    text-align:center;
+    font-size:13px;
+    margin:7px 0 14px;
+    color:#70522c;
+}
+
+.photo-puzzle{
+    width:min(350px,90vw);
+    aspect-ratio:1;
+    margin:15px auto;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:3px;
+
+    background:#4e2b17;
+    padding:3px;
+}
+
+.photo-tile{
+    position:relative;
+    cursor:pointer;
+
+    border:2px solid #d5b45d;
+
+    background-color:#c8aa6c;
+    background-repeat:no-repeat;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:25px;
+    font-weight:bold;
+    color:#5a371c;
+}
+
+.photo-tile.selected{
+    outline:4px solid #fff0a6;
+    z-index:2;
+}
+
+.photo-tile.placeholder{
+    background-image:
+        radial-gradient(circle at center,#d6b871 0 8%,transparent 9%),
+        linear-gradient(135deg,#9d7135,#e4cc91);
+}
+
+.photo-success{
+    text-align:center;
+    font-weight:bold;
+    color:#405b38;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.game-footer{
+    text-align:center;
+    padding:10px;
+    font-size:12px;
+    color:#5a371d;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:900px){
+
+    .box{
+        min-height:105px;
+    }
+
+    .box-title{
+        font-size:10px;
+    }
+
+    .box-icon{
+        font-size:21px;
+    }
+
+    .player-card{
+        padding:8px;
+    }
+
+    .player-token{
+        font-size:31px;
+    }
+}
+
+@media(max-width:650px){
+
+    #gameScreen{
+        padding:8px;
+    }
+
+    .start-scroll{
+        padding:30px 18px;
+    }
+
+    .player-inputs{
+        grid-template-columns:1fr;
+    }
+
+    .players{
+        grid-template-columns:1fr;
+    }
+
+    .turn-indicator{
+        order:-1;
+    }
+
+    .board{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .box{
+        min-height:110px;
+    }
+
+    .box-title{
+        font-size:10px;
+    }
+
+    .header-subtitle{
+        display:none;
+    }
+
+    .modal-card{
+        padding:25px 17px;
+    }
+
+    .choice-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="ancient-symbol symbol-left">☸</div>
+<div class="ancient-symbol symbol-right">𑁍</div>
+
+
+<!-- =========================================================
+     START / INTRO SCREEN
+========================================================= -->
+
+<section id="startScreen">
+
+    <div class="start-scroll">
+
+        <div class="logo-symbol">🏺</div>
+
+        <h1 class="game-title">AITIHASIK</h1>
+
+        <div class="subtitle">
+            An Ancient India Adventure
+        </div>
+
+        <div class="ornament"></div>
+
+        <div class="introduction">
+
+            <p>
+                Welcome to <strong>Aitihasik</strong> — an interactive journey
+                into the fascinating world of Ancient India.
+            </p>
+
+            <br>
+
+            <p>
+                Instead of simply reading about kings, kingdoms, battles,
+                art and culture, players discover history by
+                <strong>moving, answering, solving and playing.</strong>
+            </p>
+
+        </div>
+
+
+        <div class="goal-box">
+
+            <h3>🎓 Our Goal</h3>
+
+            <p>
+                Aitihasik is designed especially for children aged
+                <strong>7–12</strong>. The goal is to make social and historical
+                knowledge more engaging for children who may find conventional
+                classroom learning less interesting.
+                Through a simple board-game experience, players learn about
+                ancient Indian dynasties while developing curiosity,
+                memory, decision-making and teamwork.
+            </p>
+
+        </div>
+
+
+        <div class="goal-box">
+
+            <h3>⚔️ Your Mission</h3>
+
+            <p>
+                Travel through the Maurya and Shunga dynasties, discover
+                important historical facts, complete challenges and collect
+                ancient coins.
+                Reach the final gate — but remember:
+                <strong>the first player to reach the end does not automatically win.</strong>
+                Once both players reach the end, the player with the most
+                coins becomes the champion.
+            </p>
+
+        </div>
+
+
+        <h3 style="margin-top:22px;color:#67291f;">
+            Enter the names of the two explorers
+        </h3>
+
+
+        <div class="player-inputs">
+
+            <div class="input-card">
+
+                <span class="token">🐘</span>
+
+                <label for="player1Name">
+                    Player 1 — Elephant
+                </label>
+
+                <input
+                    id="player1Name"
+                    type="text"
+                    maxlength="18"
+                    placeholder="Enter Player 1 name"
+                >
+
+            </div>
+
+
+            <div class="input-card">
+
+                <span class="token">🦚</span>
+
+                <label for="player2Name">
+                    Player 2 — Peacock
+                </label>
+
+                <input
+                    id="player2Name"
+                    type="text"
+                    maxlength="18"
+                    placeholder="Enter Player 2 name"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="startError"
+            class="error-message">
+        </div>
+
+
+        <button
+            class="start-button"
+            onclick="beginGame()">
+
+            ENTER THE ANCIENT WORLD
+
+        </button>
+
+
+        <div style="margin-top:20px;font-size:12px;color:#72522c;">
+            ✦ Learn • Play • Discover • Remember ✦
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     MAIN GAME SCREEN
+========================================================= -->
+
+<main id="gameScreen">
+
+    <div class="game-container">
+
+
+        <!-- HEADER -->
+
+        <header class="game-header">
+
+            <div>
+                <div class="header-title">
+                    AITIHASIK
+                </div>
+
+                <div class="header-subtitle">
+                    ANCIENT INDIA • MAURYA & SHUNGA
+                </div>
+            </div>
+
+            <div class="header-coin">
+                🪙 Ancient Coins
+            </div>
+
+        </header>
+
+
+        <!-- PLAYER INFORMATION -->
+
+        <section class="players">
+
+            <div
+                id="playerCard0"
+                class="player-card">
+
+                <div class="player-token">🐘</div>
+
+                <div>
+                    <div
+                        id="playerName0"
+                        class="player-name">
+                        Player 1
+                    </div>
+
+                    <div class="player-info">
+                        Box:
+                        <span id="position0">1</span>
+                        &nbsp; | &nbsp;
+                        🪙
+                        <span id="coins0">0</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div
+                id="turnIndicator"
+                class="turn-indicator">
+
+                PLAYER 1'S TURN
+
+            </div>
+
+
+            <div
+                id="playerCard1"
+                class="player-card">
+
+                <div class="player-token">🦚</div>
+
+                <div>
+                    <div
+                        id="playerName1"
+                        class="player-name">
+                        Player 2
+                    </div>
+
+                    <div class="player-info">
+                        Box:
+                        <span id="position1">1</span>
+                        &nbsp; | &nbsp;
+                        🪙
+                        <span id="coins1">0</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DYNASTY SECTIONS -->
+
+        <div class="dynasty-banner">
+
+            <div class="maurya-banner">
+                ☸ MAURYA DYNASTY
+            </div>
+
+            <div class="shunga-banner">
+                🏺 SHUNGA DYNASTY
+            </div>
+
+        </div>
+
+
+        <!-- BOARD -->
+
+        <section class="board-frame">
+
+            <div
+                id="board"
+                class="board">
+            </div>
+
+        </section>
+
+
+        <!-- CONTROLS -->
+
+        <section class="controls">
+
+            <div
+                id="dice"
+                class="dice">
+                ⚀
+            </div>
+
+            <button
+                id="rollButton"
+                class="roll-button"
+                onclick="rollDice()">
+
+                🎲 ROLL DICE
+
+            </button>
+
+            <div
+                id="status"
+                class="status">
+
+                Roll the dice to begin your adventure.
+
+            </div>
+
+        </section>
+
+
+        <footer class="game-footer">
+
+            Aitihasik • Discover Ancient India Through Play
+
+        </footer>
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     UNIVERSAL MODAL
+========================================================= -->
+
+<div
+    id="modal"
+    class="modal">
+
+    <div
+        id="modalCard"
+        class="modal-card">
+
+        <div id="modalBody"></div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   GAME CONSTANTS
+========================================================= */
+
+const TOTAL_BOXES = 32;
+
+const MAURYA_START = 2;
+const MAURYA_END = 16;
+
+const SHUNGA_START = 17;
+const SHUNGA_END = 31;
+
+const FINISH_BOX = 32;
+
+
+/* =========================================================
+   PLAYERS
+========================================================= */
+
+const players = [
+    {
+        name:"",
+        token:"🐘",
+        position:1,
+        coins:0,
+        finished:false
+    },
+
+    {
+        name:"",
+        token:"🦚",
+        position:1,
+        coins:0,
+        finished:false
+    }
+];
+
+
+let currentPlayer = 0;
+let moving = false;
+let gameStarted = false;
+let gameOver = false;
+
+
+/* =========================================================
+   TRACK BONUSES
+========================================================= */
+
+const moreViewed = new Set();
+const landingRewards = new Set();
+const completedGames = new Set();
+
+
+/* =========================================================
+   SAFE HTML
+========================================================= */
+
+function safe(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array){
+
+    const arr = [...array];
+
+    for(let i = arr.length - 1; i > 0; i--){
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [arr[i],arr[j]] = [arr[j],arr[i]];
+
+    }
+
+    return arr;
+
+}
+
+
+/* =========================================================
+   MAURYA INFORMATION
+========================================================= */
+
+const mauryaInfo = [
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Chandragupta Maurya",
+        icon:"👑",
+
+        short:"The founder of the Mauryan Empire.",
+
+        points:[
+            "Chandragupta Maurya founded the Mauryan Empire around 321 BCE.",
+            "He built one of the earliest large empires in the Indian subcontinent.",
+            "His rise brought several territories under a central authority.",
+            "Chanakya, also known as Kautilya, is traditionally associated with his rise.",
+            "The Mauryan capital was Pataliputra.",
+            "Chandragupta established a strong administrative and military system."
+        ],
+
+        more:[
+            "Chandragupta's rule marked an important transition toward a large, centrally organised empire.",
+            "He later became associated with Jain traditions and is traditionally said to have spent his final years at Shravanabelagola.",
+            "Greek and Indian historical traditions provide different details about his life.",
+            "His reign created the foundation on which later Mauryan rulers expanded."
+        ],
+
+        reward:{coins:10,icon:"👑",name:"Founder’s Seal"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Treaty with Seleucus",
+        icon:"🤝",
+
+        short:"A major diplomatic agreement of the Mauryan period.",
+
+        points:[
+            "Chandragupta Maurya came into conflict with Seleucus I Nicator.",
+            "The conflict took place around 305–303 BCE.",
+            "A treaty was eventually concluded between the two sides.",
+            "The Mauryan Empire gained territories in the northwest.",
+            "The agreement also strengthened diplomatic relations.",
+            "Megasthenes later served as a Greek ambassador at the Mauryan court."
+        ],
+
+        more:[
+            "The treaty is important because it shows that ancient empires used diplomacy as well as warfare.",
+            "Seleucus received war elephants according to ancient accounts.",
+            "The agreement helped establish a relationship between the Mauryan and Hellenistic worlds.",
+            "The event demonstrates that ancient India was connected to wider international politics."
+        ],
+
+        reward:{coins:12,icon:"🤝",name:"Diplomatic Seal"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Indica & Megasthenes",
+        icon:"📜",
+
+        short:"A Greek ambassador recorded observations about India.",
+
+        points:[
+            "Megasthenes was a Greek ambassador associated with the Mauryan court.",
+            "He wrote a work known as Indica.",
+            "The original text has not survived completely.",
+            "Later writers preserved parts of his observations.",
+            "His account describes cities, society, administration and customs.",
+            "Indica is an important source for studying Mauryan India."
+        ],
+
+        more:[
+            "Megasthenes is believed to have visited Pataliputra.",
+            "Later classical authors such as Strabo, Arrian and Diodorus referred to material associated with his work.",
+            "Some details in ancient accounts are debated by historians.",
+            "Even with limitations, his writings provide an important outside perspective on India."
+        ],
+
+        reward:{coins:10,icon:"📜",name:"Scholar’s Scroll"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Bindusara’s Expansion",
+        icon:"🗺️",
+
+        short:"Bindusara continued the growth of the Mauryan Empire.",
+
+        points:[
+            "Bindusara succeeded Chandragupta Maurya.",
+            "He ruled approximately from 297 to 273 BCE.",
+            "His reign helped maintain the large Mauryan Empire.",
+            "Ancient traditions associate him with expansion toward southern India.",
+            "He maintained diplomatic links with the Hellenistic world.",
+            "His rule created continuity between Chandragupta and Ashoka."
+        ],
+
+        more:[
+            "Greek sources refer to Bindusara by names such as Amitrochates.",
+            "The exact extent of his southern campaigns is debated.",
+            "The Mauryan administrative structure continued to develop during his reign.",
+            "Ashoka succeeded Bindusara after a period of political struggle."
+        ],
+
+        reward:{coins:11,icon:"🗺️",name:"Empire Map"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Emperor Ashoka",
+        icon:"👑",
+
+        short:"One of the most famous rulers of ancient India.",
+
+        points:[
+            "Ashoka became one of the most important rulers of the Mauryan Empire.",
+            "His reign is generally dated to the 3rd century BCE.",
+            "He controlled a vast empire across much of the Indian subcontinent.",
+            "His inscriptions provide direct evidence about his ideas and policies.",
+            "After the Kalinga War, his public message placed greater emphasis on Dhamma.",
+            "His reign is remembered for administration, inscriptions and patronage."
+        ],
+
+        more:[
+            "Ashoka's inscriptions are found across different regions of South Asia.",
+            "He used Prakrit and other languages and scripts depending on the region.",
+            "The term Dhamma in his inscriptions refers to an ethical way of life.",
+            "Ashoka's historical importance comes largely from his inscriptions and their wide geographical distribution."
+        ],
+
+        reward:{coins:15,icon:"👑",name:"Emperor’s Crown"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Kalinga War",
+        icon:"⚔️",
+
+        short:"A war that deeply influenced Ashoka’s later policies.",
+
+        points:[
+            "The Kalinga War took place during Ashoka’s reign.",
+            "Kalinga was located on the eastern coast of India.",
+            "Ashoka's Rock Edict XIII describes the suffering caused by the war.",
+            "The inscription records Ashoka’s regret over the destruction.",
+            "After the war, his public emphasis shifted toward Dhamma.",
+            "The war became an important turning point in accounts of Ashoka’s reign."
+        ],
+
+        more:[
+            "Rock Edict XIII is one of the key primary sources for the Kalinga War.",
+            "Ashoka did not abandon administration or political authority after the war.",
+            "Instead, his inscriptions show a greater emphasis on ethical conduct and welfare.",
+            "The Kalinga episode demonstrates why inscriptions are important historical evidence."
+        ],
+
+        reward:{coins:15,icon:"⚔️",name:"Kalinga Shield"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Ashoka’s Edicts",
+        icon:"🪨",
+
+        short:"Messages carved on rocks and pillars across the empire.",
+
+        points:[
+            "Ashoka's edicts were inscriptions placed on rocks and pillars.",
+            "They communicate ideas about Dhamma, administration and social conduct.",
+            "Some inscriptions discuss compassion and respect for different groups.",
+            "Others discuss officials, welfare and justice.",
+            "The inscriptions were placed in different parts of the empire.",
+            "They are among the most important primary sources for Mauryan history."
+        ],
+
+        more:[
+            "The inscriptions appear in several scripts and languages.",
+            "Brahmi was widely used, while Kharosthi appears in the northwest.",
+            "Some inscriptions were written in Greek and Aramaic in regions connected to the Hellenistic world.",
+            "The edicts help historians understand how Ashoka presented his rule to the public."
+        ],
+
+        reward:{coins:13,icon:"🪨",name:"Inscription Stone"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Ashoka & Buddhism",
+        icon:"☸️",
+
+        short:"Ashoka became strongly associated with Buddhism and Dhamma.",
+
+        points:[
+            "Ashoka is traditionally associated with the spread of Buddhism.",
+            "His inscriptions also show a broader concern for ethical behaviour.",
+            "He supported religious and social welfare activities.",
+            "Buddhist traditions remember him as an important patron.",
+            "Traditions connect Ashoka with the Third Buddhist Council.",
+            "His influence helped Buddhism reach regions beyond the Mauryan heartland."
+        ],
+
+        more:[
+            "Ashoka's inscriptions should not simply be treated as Buddhist scriptures.",
+            "His Dhamma message included ideas such as respect, compassion and responsible behaviour.",
+            "Buddhist traditions contain additional stories about his life and activities.",
+            "Historians compare those traditions with inscriptions and other evidence."
+        ],
+
+        reward:{coins:13,icon:"☸️",name:"Dhamma Seal"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Lion Capital of Sarnath",
+        icon:"🦁",
+
+        short:"A famous example of Mauryan stone art.",
+
+        points:[
+            "The Lion Capital was created during Ashoka’s reign.",
+            "It was found at Sarnath in present-day Uttar Pradesh.",
+            "The capital features four lions standing back-to-back.",
+            "The sculpture was made from highly polished sandstone.",
+            "The wheel motif is associated with the Dharma Chakra.",
+            "The Lion Capital became the basis of India’s State Emblem."
+        ],
+
+        more:[
+            "Only three of the four lions are visible from the front in the official emblem.",
+            "The abacus contains animal figures and wheels.",
+            "Mauryan artists became famous for highly polished stone surfaces.",
+            "The original capital is preserved at the Sarnath museum."
+        ],
+
+        reward:{coins:14,icon:"🦁",name:"Lion Emblem"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Royal Emblem & Art",
+        icon:"🏛️",
+
+        short:"Mauryan art included monumental pillars, sculptures and architecture.",
+
+        points:[
+            "Mauryan rulers supported large stone monuments.",
+            "Ashokan pillars are among the most recognisable examples.",
+            "Mauryan stonework often shows a distinctive polished surface.",
+            "Sculptures and capitals were created with sophisticated craftsmanship.",
+            "Pataliputra was an important political and cultural centre.",
+            "Mauryan art influenced later Indian artistic traditions."
+        ],
+
+        more:[
+            "Mauryan art included both imperial monuments and popular artistic traditions.",
+            "Yaksha and Yakshi sculptures are examples of early Indian stone sculpture.",
+            "Pillar capitals frequently used animal imagery.",
+            "The Mauryan period is important in the development of monumental stone architecture."
+        ],
+
+        reward:{coins:12,icon:"🏛️",name:"Royal Artisan Token"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Strengthening the Empire",
+        icon:"🛡️",
+
+        short:"Administration, roads, officials and a powerful army helped govern the empire.",
+
+        points:[
+            "The Mauryan state required a strong administrative system.",
+            "Officials helped manage provinces and local areas.",
+            "Pataliputra served as the imperial capital.",
+            "The army was an important part of Mauryan power.",
+            "Trade routes connected different parts of the empire.",
+            "Taxes and revenue supported administration and public works."
+        ],
+
+        more:[
+            "Ancient texts such as the Arthashastra provide information about statecraft, although historians debate how directly it describes Mauryan administration.",
+            "Provincial centres helped the central government manage distant territories.",
+            "The empire's large geographical size made communication and administration important challenges.",
+            "Infrastructure and trade helped connect different regions."
+        ],
+
+        reward:{coins:12,icon:"🛡️",name:"Empire Shield"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Maurya",
+        title:"Decline of the Mauryan Empire",
+        icon:"🏺",
+
+        short:"The Mauryan Empire weakened after Ashoka and eventually ended.",
+
+        points:[
+            "Ashoka died in the 3rd century BCE.",
+            "The empire became harder to maintain after his reign.",
+            "Later rulers controlled a smaller territory.",
+            "Political and administrative pressures weakened central authority.",
+            "Regional powers gradually became more independent.",
+            "The last Mauryan ruler was Brihadratha."
+        ],
+
+        more:[
+            "Brihadratha was killed by his military commander Pushyamitra.",
+            "This event is traditionally dated to around 185 BCE.",
+            "Historians discuss several possible reasons for the decline rather than one single cause.",
+            "The end of Mauryan rule created space for new regional powers, including the Shungas."
+        ],
+
+        reward:{coins:14,icon:"🏺",name:"Ancient Relic"}
+    }
+
+];
+
+
+/* =========================================================
+   MAURYA GAMES
+========================================================= */
+
+const mauryaGames = [
+
+    {
+        type:"game",
+        dynasty:"Maurya",
+        game:"dynastyCode",
+        title:"Dynasty Code",
+        icon:"🔐",
+        reward:{coins:25,icon:"🔐",name:"Royal Code"}
+    },
+
+    {
+        type:"game",
+        dynasty:"Maurya",
+        game:"photoPuzzle",
+        title:"Photo Arrangement",
+        icon:"🖼️",
+        reward:{coins:30,icon:"🖼️",name:"Master Artist"}
+    },
+
+    {
+        type:"game",
+        dynasty:"Maurya",
+        game:"mauryaQuiz",
+        title:"Easy Maurya Quiz",
+        icon:"❓",
+        reward:{coins:20,icon:"📜",name:"Knowledge Scroll"}
+    }
+
+];
+
+
+/* =========================================================
+   SHUNGA INFORMATION
+========================================================= */
+
+const shungaInfo = [
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Introduction to Pushyamitra Shunga",
+        icon:"👑",
+
+        short:"The founder of the Shunga dynasty.",
+
+        points:[
+            "Pushyamitra Shunga founded the Shunga dynasty.",
+            "He became ruler after the end of Mauryan rule.",
+            "Ancient sources describe him as a military commander.",
+            "His kingdom was centred in northern India.",
+            "Pataliputra remained an important political centre for a period.",
+            "The Shunga period followed the Mauryan Empire."
+        ],
+
+        more:[
+            "Pushyamitra is mentioned in sources including the Puranas and Buddhist traditions.",
+            "Different sources present different views of his reign.",
+            "The Shunga dynasty ruled parts of northern and central India.",
+            "The dynasty is especially important for the development of art and architecture."
+        ],
+
+        reward:{coins:10,icon:"👑",name:"Shunga Crown"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Rise of the Shungas",
+        icon:"🌅",
+
+        short:"The Shungas emerged during a period of political change.",
+
+        points:[
+            "The Shunga dynasty emerged around the middle of the 2nd century BCE.",
+            "Pushyamitra replaced the last Mauryan ruler Brihadratha.",
+            "The change marked the end of Mauryan imperial rule.",
+            "The Shunga state controlled important parts of northern India.",
+            "Regional political powers became more significant during this period.",
+            "The period connected Mauryan and later Indian political traditions."
+        ],
+
+        more:[
+            "The transition from Mauryan to Shunga rule was not the same in every region.",
+            "Some areas developed their own political powers.",
+            "The Shunga period is especially important for understanding post-Mauryan India.",
+            "Archaeological evidence adds information beyond literary sources."
+        ],
+
+        reward:{coins:11,icon:"🌅",name:"Rise Token"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Pushyamitra’s Kingdom",
+        icon:"🗺️",
+
+        short:"The Shunga state controlled important northern territories.",
+
+        points:[
+            "Pushyamitra ruled a kingdom centred in northern India.",
+            "Pataliputra was an important centre during the early Shunga period.",
+            "Vidisha also became an important Shunga centre.",
+            "The kingdom faced competition from other regional powers.",
+            "Political control was not identical to the much larger Mauryan Empire.",
+            "The Shunga state continued several older administrative traditions."
+        ],
+
+        more:[
+            "Vidisha became especially significant during the Shunga period.",
+            "The Shungas controlled areas of the Ganges valley and central India at different times.",
+            "The exact borders of the kingdom changed over time.",
+            "Archaeological sites help historians reconstruct the geographical reach of Shunga influence."
+        ],
+
+        reward:{coins:10,icon:"🗺️",name:"Kingdom Map"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Military Strength",
+        icon:"⚔️",
+
+        short:"Military power was important in protecting the Shunga kingdom.",
+
+        points:[
+            "The Shunga rulers maintained military forces.",
+            "The army helped defend the kingdom from external threats.",
+            "Military commanders played an important political role.",
+            "The period saw conflicts with neighbouring powers.",
+            "Defence was important because the post-Mauryan world had many regional states.",
+            "The army helped rulers maintain political authority."
+        ],
+
+        more:[
+            "Ancient sources associate Pushyamitra with military campaigns.",
+            "The Shunga state faced pressure from Indo-Greek powers in the northwest.",
+            "Military power was only one part of maintaining a kingdom.",
+            "Administration, alliances and control of important cities were also significant."
+        ],
+
+        reward:{coins:12,icon:"⚔️",name:"Warrior Badge"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Ashvamedha Yajna",
+        icon:"🐎",
+
+        short:"A royal ritual associated with Pushyamitra Shunga.",
+
+        points:[
+            "The Ashvamedha was an ancient royal ritual.",
+            "It was associated with claims of royal power and sovereignty.",
+            "Literary traditions connect Pushyamitra with the performance of Ashvamedha.",
+            "The ritual involved a horse and a year-long ceremonial process.",
+            "It was a political and religious symbol of kingship.",
+            "The ritual had existed in Indian traditions before the Shunga period."
+        ],
+
+        more:[
+            "The Ashvamedha is described in ancient Sanskrit texts.",
+            "Its association with Pushyamitra comes mainly from literary traditions.",
+            "Historians examine these traditions together with other evidence.",
+            "The ritual shows how political authority and religious traditions could be connected."
+        ],
+
+        reward:{coins:13,icon:"🐎",name:"Royal Horse"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Indo-Greek Conflicts",
+        icon:"🏹",
+
+        short:"The Shunga period saw conflicts with Indo-Greek powers.",
+
+        points:[
+            "Indo-Greek kingdoms existed in the northwest of the Indian subcontinent.",
+            "Some ancient sources describe conflicts between Indo-Greek forces and the Shungas.",
+            "The exact details of these conflicts remain debated.",
+            "Military pressure came from several directions during the period.",
+            "The Shunga kingdom had to defend important northern territories.",
+            "These conflicts show the political connections between northwest India and the Gangetic region."
+        ],
+
+        more:[
+            "Patronage and political relationships changed frequently in the post-Mauryan period.",
+            "Literary and archaeological evidence provide different pieces of information.",
+            "The Indo-Greek world was connected to wider Hellenistic culture.",
+            "The Shunga period therefore belongs to a time of considerable cultural interaction."
+        ],
+
+        reward:{coins:14,icon:"🏹",name:"Defender’s Bow"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Agnimitra",
+        icon:"👑",
+
+        short:"Agnimitra was the second Shunga ruler.",
+
+        points:[
+            "Agnimitra succeeded Pushyamitra.",
+            "He is generally regarded as the second ruler of the Shunga dynasty.",
+            "Vidisha is strongly associated with his rule.",
+            "His name is famous through the Sanskrit play Malavikagnimitram.",
+            "The play is traditionally attributed to Kalidasa.",
+            "Agnimitra provides a link between historical Shunga rule and classical literature."
+        ],
+
+        more:[
+            "Malavikagnimitram is a dramatic work rather than a straightforward historical record.",
+            "The play includes court life, relationships and political events.",
+            "Historians therefore use it carefully alongside other evidence.",
+            "Agnimitra's historical reign belongs to the early Shunga period."
+        ],
+
+        reward:{coins:12,icon:"👑",name:"Agnimitra Seal"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Shunga Administration",
+        icon:"🏛️",
+
+        short:"The Shungas governed a smaller political world than the Mauryas.",
+
+        points:[
+            "The Shunga state was less geographically unified than the Mauryan Empire.",
+            "Important centres included Pataliputra and Vidisha.",
+            "Local and regional powers had greater importance.",
+            "Military leaders played an important role in politics.",
+            "Administration involved managing territory, resources and security.",
+            "Different areas could have different levels of direct royal control."
+        ],
+
+        more:[
+            "The post-Mauryan period saw the growth of several regional kingdoms.",
+            "This political diversity makes the period different from the highly centralised image associated with the Mauryan Empire.",
+            "Archaeological evidence helps identify important Shunga centres.",
+            "Coins and inscriptions also provide clues about political authority."
+        ],
+
+        reward:{coins:11,icon:"🏛️",name:"Administrator Seal"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Shunga Art & Architecture",
+        icon:"🏺",
+
+        short:"The Shunga period contributed significantly to Buddhist artistic sites.",
+
+        points:[
+            "Shunga-era art is associated with important Buddhist monuments.",
+            "Stone railings and decorative sculptures became increasingly elaborate.",
+            "Bharhut is one of the major sites associated with this artistic tradition.",
+            "Sanchi also received important additions during the period.",
+            "Artists represented people, animals, plants and stories.",
+            "The period helped develop narrative relief sculpture."
+        ],
+
+        more:[
+            "Many monuments were built and modified over several generations.",
+            "Dating individual sculptures can therefore be complicated.",
+            "Shunga-period art is important for the history of Indian narrative sculpture.",
+            "Buddhist sites received patronage from different groups, not only rulers."
+        ],
+
+        reward:{coins:14,icon:"🏺",name:"Artist’s Pottery"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Bharhut Stupa",
+        icon:"🛕",
+
+        short:"A famous Buddhist monument associated with the Shunga period.",
+
+        points:[
+            "Bharhut is located in present-day Madhya Pradesh.",
+            "The site became famous for its carved stone railings.",
+            "Many reliefs depict Buddhist stories and symbols.",
+            "Inscriptions provide names and information about donors.",
+            "The sculptures are important evidence for early Indian art.",
+            "Bharhut shows the development of narrative visual storytelling."
+        ],
+
+        more:[
+            "The Bharhut railing contains scenes connected with Jataka stories.",
+            "The Buddha is often represented through symbols rather than a human figure in early reliefs.",
+            "Donations came from different members of society.",
+            "Many Bharhut sculptures are now preserved in museums."
+        ],
+
+        reward:{coins:15,icon:"🛕",name:"Bharhut Relic"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Sanchi Development",
+        icon:"☸️",
+
+        short:"Sanchi grew into an important centre of Buddhist architecture.",
+
+        points:[
+            "Sanchi is one of India's most important Buddhist archaeological sites.",
+            "The site was originally associated with Ashoka.",
+            "Important enlargement and decorative work happened after the Mauryan period.",
+            "Stone railings and other architectural elements were added.",
+            "Sanchi became known for its stupas and artistic decoration.",
+            "The site shows how monuments developed over many generations."
+        ],
+
+        more:[
+            "The famous gateways at Sanchi are later additions, associated with subsequent periods.",
+            "The Great Stupa was enlarged and developed over time.",
+            "Sanchi demonstrates the continuity of Buddhist monument building across different dynasties.",
+            "The site is now a major archaeological and heritage location."
+        ],
+
+        reward:{coins:14,icon:"☸️",name:"Sanchi Wheel"}
+    },
+
+
+    {
+        type:"info",
+        dynasty:"Shunga",
+        title:"Religion & Culture",
+        icon:"🪔",
+
+        short:"The Shunga period was a time of diverse religious and cultural activity.",
+
+        points:[
+            "Brahmanical traditions remained important during the Shunga period.",
+            "Buddhist institutions and monuments also continued to receive patronage.",
+            "Artistic traditions developed at sites such as Bharhut and Sanchi.",
+            "Sanskrit literature became increasingly important in later classical traditions.",
+            "Regional cultures interacted with one another.",
+            "The period demonstrates that ancient Indian society contained diverse traditions."
+        ],
+
+        more:[
+            "Some Buddhist texts portray Pushyamitra negatively, while other evidence gives a more complex picture.",
+            "Historians do not treat every literary claim as direct historical fact.",
+            "Archaeological evidence shows continued Buddhist monument activity.",
+            "Religion, politics, art and literature were closely connected but cannot be reduced to a single story."
+        ],
+
+        reward:{coins:13,icon:"🪔",name:"Culture Lamp"}
+    }
+
+];
+
+
+/* =========================================================
+   SHUNGA GAMES
+========================================================= */
+
+const shungaGames = [
+
+    {
+        type:"game",
+        dynasty:"Shunga",
+        game:"malavikagnimitram",
+        title:"Malavikagnimitram",
+        icon:"🎭",
+        reward:{coins:25,icon:"🎭",name:"Drama Token"}
+    },
+
+    {
+        type:"game",
+        dynasty:"Shunga",
+        game:"dynastyPuzzle",
+        title:"Dynasty Puzzle",
+        icon:"🧩",
+        reward:{coins:30,icon:"🧩",name:"Puzzle Jewel"}
+    },
+
+    {
+        type:"game",
+        dynasty:"Shunga",
+        game:"battleDefense",
+        title:"Battle & Kingdom Defense",
+        icon:"🛡️",
+        reward:{coins:30,icon:"🛡️",name:"Defender’s Treasure"}
+    }
+
+];
+
+
+/* =========================================================
+   BOARD DATA
+========================================================= */
+
+let boardData = [];
+
+
+function createBoardData(){
+
+    const mauryaContent = shuffle([
+        ...mauryaInfo,
+        ...mauryaGames
+    ]);
+
+    const shungaContent = shuffle([
+        ...shungaInfo,
+        ...shungaGames
+    ]);
+
+    boardData = [
+
+        {
+            type:"start",
+            title:"Start",
+            icon:"🚩",
+            reward:{coins:0,icon:"🚩",name:"Starting Gate"}
+        },
+
+        ...mauryaContent,
+
+        ...shungaContent,
+
+        {
+            type:"finish",
+            title:"End",
+            icon:"🏆",
+            reward:{coins:0,icon:"🏆",name:"Final Gate"}
+        }
+
+    ];
+
+}
+
+
+/* =========================================================
+   BEGIN GAME
+========================================================= */
+
+function beginGame(){
+
+    const p1 = document.getElementById("player1Name").value.trim();
+    const p2 = document.getElementById("player2Name").value.trim();
+
+    const error = document.getElementById("startError");
+
+    if(!p1 || !p2){
+
+        error.textContent =
+            "Please enter both explorer names before entering the ancient world.";
+
+        return;
+
+    }
+
+    players[0].name = p1;
+    players[1].name = p2;
+
+    players[0].position = 1;
+    players[1].position = 1;
+
+    players[0].coins = 0;
+    players[1].coins = 0;
+
+    players[0].finished = false;
+    players[1].finished = false;
+
+    currentPlayer = 0;
+    moving = false;
+    gameOver = false;
+
+    moreViewed.clear();
+    landingRewards.clear();
+    completedGames.clear();
+
+    createBoardData();
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("gameScreen").style.display = "block";
+
+    gameStarted = true;
+
+    updateUI();
+    renderBoard();
+
+    showWelcome();
+
+}
+
+
+/* =========================================================
+   WELCOME POPUP
+========================================================= */
+
+function showWelcome(){
+
+    openModal(`
+
+        <div class="modal-icon">🏺</div>
+
+        <h2 class="modal-title">
+            Welcome to Aitihasik
+        </h2>
+
+        <div class="modal-subtitle">
+            YOUR ADVENTURE INTO ANCIENT INDIA BEGINS
+        </div>
+
+        <div class="modal-content">
+
+            <p style="text-align:center;line-height:1.8;">
+                Welcome,
+                <strong>${safe(players[0].name)}</strong>
+                and
+                <strong>${safe(players[1].name)}</strong>.
+            </p>
+
+            <br>
+
+            <p>
+                You are about to travel through two important chapters
+                of Ancient Indian history:
+                <strong>the Maurya Dynasty</strong> and
+                <strong>the Shunga Dynasty</strong>.
+            </p>
+
+            <br>
+
+            <p>
+                Along the way, you will discover kings, battles,
+                diplomacy, art, architecture, culture and fascinating
+                historical facts — but you will also have to solve
+                challenges to collect ancient coins.
+            </p>
+
+        </div>
+
+        <div class="reward-box">
+            🪙 Explore the board • Learn history • Collect coins
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="showInstructions()">
+
+                CONTINUE
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+function showInstructions(){
+
+    openModal(`
+
+        <div class="modal-icon">📜</div>
+
+        <h2 class="modal-title">
+            How to Play
+        </h2>
+
+        <div class="modal-subtitle">
+            THE RULES OF THE ANCIENT ADVENTURE
+        </div>
+
+        <div class="modal-content">
+
+            <ul class="info-list">
+
+                <li>
+                    🎲 Roll the dice to determine how many boxes
+                    your explorer moves.
+                </li>
+
+                <li>
+                    🐘 Player 1 is the Elephant and
+                    🦚 Player 2 is the Peacock.
+                </li>
+
+                <li>
+                    📜 When you land on an information box,
+                    read the historical information.
+                </li>
+
+                <li>
+                    ✨ Use <strong>More Information</strong>
+                    to discover additional facts and earn
+                    a learning bonus of <strong>+10 coins</strong>.
+                </li>
+
+                <li>
+                    🎮 When you land on a game box,
+                    complete its mini-game to earn coins.
+                </li>
+
+                <li>
+                    🪙 Every landing gives the explorer a
+                    historical reward.
+                </li>
+
+                <li>
+                    🏁 Reaching Box 32 means that player has
+                    finished, but the game does not stop.
+                </li>
+
+                <li>
+                    🏆 BOTH players must reach Box 32.
+                    The player with the <strong>most coins</strong>
+                    wins.
+                </li>
+
+                <li>
+                    🤝 If both players have the same number
+                    of coins, the result is a tie.
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="reward-box">
+            ⚔️ Your knowledge is your greatest treasure.
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="closeModal()">
+
+                BEGIN ADVENTURE
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+/* =========================================================
+   BOARD RENDER
+========================================================= */
+
+function renderBoard(){
+
+    const board = document.getElementById("board");
+
+    board.innerHTML = "";
+
+    boardData.forEach((data,index)=>{
+
+        const boxNumber = index + 1;
+
+        const div = document.createElement("div");
+
+        let classes = "box";
+
+        if(data.dynasty === "Maurya"){
+            classes += " maurya";
+        }
+
+        if(data.dynasty === "Shunga"){
+            classes += " shunga";
+        }
+
+        if(data.type === "start"){
+            classes += " start";
+        }
+
+        if(data.type === "finish"){
+            classes += " finish";
+        }
+
+        if(
+            players[0].position === boxNumber ||
+            players[1].position === boxNumber
+        ){
+            classes += " current-position";
+        }
+
+        div.className = classes;
+
+        let rewardHTML = "";
+
+        if(data.reward){
+
+            rewardHTML =
+                `<div class="box-reward">
+                    ${data.reward.icon}
+                    +${data.reward.coins}
+                </div>`;
+
+        }
+
+        let tokensHTML = "";
+
+        if(players[0].position === boxNumber){
+
+            tokensHTML +=
+                `<span class="token">🐘</span>`;
+
+        }
+
+        if(players[1].position === boxNumber){
+
+            tokensHTML +=
+                `<span class="token">🦚</span>`;
+
+        }
+
+        div.innerHTML = `
+
+            <div class="box-number">
+                BOX ${boxNumber}
+            </div>
+
+            <div class="box-icon">
+                ${data.icon || "🏺"}
+            </div>
+
+            <div class="box-title">
+                ${safe(data.title)}
+            </div>
+
+            ${rewardHTML}
+
+            <div class="tokens">
+                ${tokensHTML}
+            </div>
+
+        `;
+
+        board.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================================
+   UI UPDATE
+========================================================= */
+
+function updateUI(){
+
+    for(let i=0;i<2;i++){
+
+        document.getElementById(`playerName${i}`)
+            .textContent = players[i].name;
+
+        document.getElementById(`position${i}`)
+            .textContent = players[i].position;
+
+        document.getElementById(`coins${i}`)
+            .textContent = players[i].coins;
+
+    }
+
+    document.getElementById("playerCard0")
+        .classList.toggle("active",currentPlayer === 0 && !players[0].finished);
+
+    document.getElementById("playerCard1")
+        .classList.toggle("active",currentPlayer === 1 && !players[1].finished);
+
+
+    if(!gameOver){
+
+        let activeName = players[currentPlayer].name;
+
+        if(players[currentPlayer].finished){
+
+            document.getElementById("turnIndicator")
+                .textContent = "WAITING FOR OTHER PLAYER";
+
+        }else{
+
+            document.getElementById("turnIndicator")
+                .textContent =
+                    safe(activeName).toUpperCase() + "'S TURN";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   DICE
+========================================================= */
+
+const diceFaces = [
+    "⚀",
+    "⚁",
+    "⚂",
+    "⚃",
+    "⚄",
+    "⚅"
+];
+
+
+function rollDice(){
+
+    if(
+        !gameStarted ||
+        moving ||
+        gameOver ||
+        players[currentPlayer].finished
+    ){
+
+        return;
+
+    }
+
+    moving = true;
+
+    const rollButton =
+        document.getElementById("rollButton");
+
+    const dice =
+        document.getElementById("dice");
+
+    rollButton.disabled = true;
+
+    dice.classList.add("rolling");
+
+    document.getElementById("status")
+        .textContent =
+        `${players[currentPlayer].name} is rolling the ancient dice...`;
+
+
+    let animationCount = 0;
+
+    const animation = setInterval(()=>{
+
+        const randomFace =
+            Math.floor(Math.random()*6);
+
+        dice.textContent = diceFaces[randomFace];
+
+        animationCount++;
+
+        if(animationCount >= 8){
+
+            clearInterval(animation);
+
+            dice.classList.remove("rolling");
+
+            const roll =
+                Math.floor(Math.random()*6)+1;
+
+            dice.textContent = diceFaces[roll-1];
+
+            document.getElementById("status")
+                .textContent =
+                `${players[currentPlayer].name} rolled ${roll}.`;
+
+            movePlayer(roll);
+
+        }
+
+    },80);
+
+}
+
+
+/* =========================================================
+   PLAYER MOVEMENT
+========================================================= */
+
+function movePlayer(roll){
+
+    const player = players[currentPlayer];
+
+    const startPosition = player.position;
+
+    const target =
+        Math.min(startPosition + roll,FINISH_BOX);
+
+    let step = startPosition;
+
+    const moveInterval = setInterval(()=>{
+
+        step++;
+
+        player.position = step;
+
+        renderBoard();
+        updateUI();
+
+        if(step >= target){
+
+            clearInterval(moveInterval);
+
+            setTimeout(()=>{
+
+                moving = false;
+
+                handleLanding();
+
+            },350);
+
+        }
+
+    },230);
+
+}
+
+
+/* =========================================================
+   LANDING
+========================================================= */
+
+function handleLanding(){
+
+    const player = players[currentPlayer];
+
+    if(player.position === FINISH_BOX){
+
+        player.finished = true;
+
+        renderBoard();
+        updateUI();
+
+        showFinishPopup();
+
+        return;
+
+    }
+
+    const data =
+        boardData[player.position - 1];
+
+    if(!data){
+
+        nextTurn();
+        return;
+
+    }
+
+
+    awardLandingReward(data);
+
+
+    if(data.type === "info"){
+
+        showInfoPopup(data);
+
+    }
+
+    else if(data.type === "game"){
+
+        showGamePopup(data);
+
+    }
+
+}
+
+
+/* =========================================================
+   LANDING REWARD
+========================================================= */
+
+function awardLandingReward(data){
+
+    const key =
+        `${currentPlayer}-${players[currentPlayer].position}`;
+
+    if(landingRewards.has(key)){
+        return;
+    }
+
+    landingRewards.add(key);
+
+    if(data.reward && data.reward.coins){
+
+        players[currentPlayer].coins +=
+            data.reward.coins;
+
+    }
+
+    updateUI();
+    renderBoard();
+
+}
+
+
+/* =========================================================
+   INFO POPUP
+========================================================= */
+
+function showInfoPopup(data){
+
+    const points =
+        data.points.map(point =>
+            `<li>${safe(point)}</li>`
+        ).join("");
+
+
+    openModal(`
+
+        <div class="modal-icon">
+            ${data.icon}
+        </div>
+
+        <h2 class="modal-title">
+            ${safe(data.title)}
+        </h2>
+
+        <div class="modal-subtitle">
+            ${data.dynasty.toUpperCase()} DYNASTY
+        </div>
+
+        <div class="modal-content">
+
+            <p style="text-align:center;margin-bottom:12px;">
+                <strong>${safe(data.short)}</strong>
+            </p>
+
+            <ul class="info-list">
+                ${points}
+            </ul>
+
+        </div>
+
+        <div class="reward-box">
+            ${data.reward.icon}
+            Landing Reward:
+            +${data.reward.coins} coins
+            <br>
+            <small>${safe(data.reward.name)}</small>
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button secondary"
+                onclick="showMoreInformation()">
+
+                MORE INFORMATION +10 🪙
+
+            </button>
+
+            <button
+                class="modal-button"
+                onclick="continueAfterLanding()">
+
+                CONTINUE PLAYING
+
+            </button>
+
+        </div>
+
+    `);
+
+
+    window.currentInfoData = data;
+
+}
+
+
+/* =========================================================
+   MORE INFORMATION
+========================================================= */
+
+function showMoreInformation(){
+
+    const data = window.currentInfoData;
+
+    if(!data){
+        return;
+    }
+
+    const key =
+        `${currentPlayer}-${players[currentPlayer].position}`;
+
+    let bonusMessage = "";
+
+    if(!moreViewed.has(key)){
+
+        moreViewed.add(key);
+
+        players[currentPlayer].coins += 10;
+
+        bonusMessage = `
+            <div class="reward-box">
+                📚 LEARNING BONUS
+                <br>
+                +10 Ancient Coins
+            </div>
+        `;
+
+    }else{
+
+        bonusMessage = `
+            <div class="reward-box">
+                📖 You have already received
+                the learning bonus for this box.
+            </div>
+        `;
+
+    }
+
+
+    const moreHTML =
+        data.more.map(item =>
+            `<li>${safe(item)}</li>`
+        ).join("");
+
+
+    openModal(`
+
+        <div class="modal-icon">
+            ${data.icon}
+        </div>
+
+        <h2 class="modal-title">
+            More About ${safe(data.title)}
+        </h2>
+
+        <div class="modal-subtitle">
+            DISCOVER ANOTHER LAYER OF HISTORY
+        </div>
+
+        <div class="modal-content">
+
+            <div class="more-section">
+
+                <ul class="info-list">
+                    ${moreHTML}
+                </ul>
+
+            </div>
+
+        </div>
+
+        ${bonusMessage}
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="continueAfterLanding()">
+
+                CONTINUE PLAYING
+
+            </button>
+
+        </div>
+
+    `);
+
+    updateUI();
+
+}
+
+
+/* =========================================================
+   CONTINUE AFTER INFO
+========================================================= */
+
+function continueAfterLanding(){
+
+    closeModal();
+
+    setTimeout(()=>{
+
+        nextTurn();
+
+    },250);
+
+}
+
+
+/* =========================================================
+   NEXT TURN
+========================================================= */
+
+function nextTurn(){
+
+    if(gameOver){
+        return;
+    }
+
+
+    if(players[0].finished && players[1].finished){
+
+        endGame();
+        return;
+
+    }
+
+
+    let nextPlayer =
+        currentPlayer === 0 ? 1 : 0;
+
+
+    if(players[nextPlayer].finished){
+
+        nextPlayer =
+            nextPlayer === 0 ? 1 : 0;
+
+    }
+
+
+    if(players[nextPlayer].finished){
+
+        if(players[0].finished && players[1].finished){
+
+            endGame();
+
+        }
+
+        return;
+
+    }
+
+
+    currentPlayer = nextPlayer;
+
+    updateUI();
+
+    document.getElementById("rollButton")
+        .disabled = false;
+
+    document.getElementById("status")
+        .textContent =
+        `${players[currentPlayer].name}'s turn — roll the dice.`;
+
+}
+
+
+/* =========================================================
+   FINISH POPUP
+========================================================= */
+
+function showFinishPopup(){
+
+    const player = players[currentPlayer];
+
+    openModal(`
+
+        <div class="modal-icon">
+            🏁
+        </div>
+
+        <h2 class="modal-title">
+            The Final Gate Has Been Reached!
+        </h2>
+
+        <div class="modal-subtitle">
+            BOX 32 • END OF THE ADVENTURE
+        </div>
+
+        <div class="modal-content">
+
+            <p style="text-align:center;font-size:18px;">
+                <strong>${safe(player.name)}</strong>
+                has reached the final gate!
+            </p>
+
+            <br>
+
+            <p style="text-align:center;">
+                🪙 Current Treasure:
+                <strong>${player.coins} coins</strong>
+            </p>
+
+            <br>
+
+            <p style="text-align:center;">
+                But the adventure is not over yet.
+                The other explorer must also reach Box 32.
+            </p>
+
+        </div>
+
+        <div class="reward-box">
+            🏆 BOTH EXPLORERS MUST REACH THE END
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="continueAfterFinish()">
+
+                WAIT FOR THE OTHER EXPLORER
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+function continueAfterFinish(){
+
+    closeModal();
+
+    setTimeout(()=>{
+
+        nextTurn();
+
+    },250);
+
+}
+
+
+/* =========================================================
+   GAME POPUP
+========================================================= */
+
+function showGamePopup(data){
+
+    window.currentGameData = data;
+
+    if(data.game === "dynastyCode"){
+        showDynastyCode();
+    }
+
+    else if(data.game === "photoPuzzle"){
+        showPhotoPuzzle();
+    }
+
+    else if(data.game === "mauryaQuiz"){
+        showMauryaQuiz();
+    }
+
+    else if(data.game === "malavikagnimitram"){
+        showMalavikagnimitram();
+    }
+
+    else if(data.game === "dynastyPuzzle"){
+        showDynastyPuzzle();
+    }
+
+    else if(data.game === "battleDefense"){
+        showBattleDefense();
+    }
+
+}
+
+
+/* =========================================================
+   GAME COMPLETION
+========================================================= */
+
+function completeMiniGame(){
+
+    const data = window.currentGameData;
+
+    if(!data){
+        return;
+    }
+
+    const player = players[currentPlayer];
+
+    const reward = data.reward;
+
+    const gameKey =
+        `${currentPlayer}-${player.position}-${data.game}`;
+
+    if(!completedGames.has(gameKey)){
+
+        completedGames.add(gameKey);
+
+        player.coins += reward.coins;
+
+    }
+
+
+    openModal(`
+
+        <div class="modal-icon">
+            🎉
+        </div>
+
+        <h2 class="modal-title">
+            Challenge Complete!
+        </h2>
+
+        <div class="modal-subtitle">
+            WELL PLAYED, ${safe(player.name).toUpperCase()}
+        </div>
+
+        <div class="modal-content">
+
+            <p style="text-align:center;">
+                You successfully completed
+                <strong>${safe(data.title)}</strong>.
+            </p>
+
+        </div>
+
+        <div class="reward-box">
+
+            ${reward.icon}
+            +${reward.coins} COINS
+            <br>
+            <small>${safe(reward.name)}</small>
+
+        </div>
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="finishGameLanding()">
+
+                CONTINUE PLAYING
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+/* =========================================================
+   FINISH GAME LANDING
+========================================================= */
+
+function finishGameLanding(){
+
+    closeModal();
+
+    updateUI();
+
+    setTimeout(()=>{
+
+        nextTurn();
+
+    },250);
+
+}
+
+
+/* =========================================================
+   GAME 1 — DYNASTY CODE
+========================================================= */
+
+function showDynastyCode(){
+
+    openModal(`
+
+        <div class="modal-icon">🔐</div>
+
+        <h2 class="modal-title">
+            Dynasty Code
+        </h2>
+
+        <div class="modal-subtitle">
+            MAURYA CHALLENGE
+        </div>
+
+        <div class="game-area">
+
+            <div class="game-question">
+                Decode the ancient dynasty name:
+                <br><br>
+
+                <strong style="font-size:25px;">
+                    M _ U R Y A
+                </strong>
+
+                <br><br>
+
+                Which letter completes the name?
+            </div>
+
+            <div class="choice-grid">
+
+                <button
+                    class="choice"
+                    onclick="answerDynastyCode('A')">
+                    A
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDynastyCode('E')">
+                    E
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDynastyCode('O')">
+                    O
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDynastyCode('U')">
+                    U
+                </button>
+
+            </div>
+
+            <div
+                id="gameMessage"
+                class="game-message">
+            </div>
+
+        </div>
+
+    `);
+
+}
+
+
+function answerDynastyCode(answer){
+
+    if(answer === "A"){
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Correct! M-A-U-R-Y-A. The Maurya Dynasty awaits!";
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }else{
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Not quite. Think of the dynasty founded by Chandragupta Maurya.";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME 2 — PHOTO ARRANGEMENT
+========================================================= */
+
+let photoOrder = [];
+let selectedTile = null;
+
+
+function showPhotoPuzzle(){
+
+    photoOrder = shuffle([0,1,2,3]);
+
+    selectedTile = null;
+
+    renderPhotoPuzzle();
+
+}
+
+
+// Embedded historical portrait image — no separate JPG file is required.
+const MAURYA_PHOTO =
+    "data:image/jpeg;base64,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";
+
+function renderPhotoPuzzle(){
+
+    openModal(`
+
+        <div class="modal-icon">🖼️</div>
+
+        <h2 class="modal-title">
+            Photo Arrangement
+        </h2>
+
+        <div class="modal-subtitle">
+            MAURYA ART CHALLENGE
+        </div>
+
+        <div class="photo-note">
+            Arrange the 4 pieces into the correct 2 × 2 picture.
+            <br>
+            Click two pieces to swap them.
+        </div>
+
+        <div
+            id="photoPuzzle"
+            class="photo-puzzle">
+        </div>
+
+        <div
+            id="photoMessage"
+            class="game-message">
+        </div>
+
+        <div class="photo-note">
+            📌 The historical portrait is built into this game.
+        </div>
+
+    `);
+
+    renderPhotoTiles();
+
+}
+
+
+function renderPhotoTiles(){
+
+    const container =
+        document.getElementById("photoPuzzle");
+
+    if(!container){
+        return;
+    }
+
+    container.innerHTML = "";
+
+
+    photoOrder.forEach((piece,index)=>{
+
+        const tile =
+            document.createElement("div");
+
+        tile.className = "photo-tile";
+
+        if(selectedTile === index){
+
+            tile.classList.add("selected");
+
+        }
+
+
+        const positions = [
+            "0% 0%",
+            "100% 0%",
+            "0% 100%",
+            "100% 100%"
+        ];
+
+
+        tile.style.backgroundImage =
+            "url('" + MAURYA_PHOTO + "')";
+
+        tile.style.backgroundSize =
+            "200% 200%";
+
+        tile.style.backgroundPosition =
+            positions[piece];
+
+
+        tile.textContent = "";
+
+
+        tile.onclick = ()=>{
+
+            selectPhotoTile(index);
+
+        };
+
+
+        container.appendChild(tile);
+
+    });
+
+}
+
+
+function selectPhotoTile(index){
+
+    if(selectedTile === null){
+
+        selectedTile = index;
+
+        renderPhotoTiles();
+
+        return;
+
+    }
+
+
+    if(selectedTile === index){
+
+        selectedTile = null;
+
+        renderPhotoTiles();
+
+        return;
+
+    }
+
+
+    [
+        photoOrder[selectedTile],
+        photoOrder[index]
+    ] =
+    [
+        photoOrder[index],
+        photoOrder[selectedTile]
+    ];
+
+
+    selectedTile = null;
+
+    renderPhotoTiles();
+
+
+    if(
+        photoOrder[0] === 0 &&
+        photoOrder[1] === 1 &&
+        photoOrder[2] === 2 &&
+        photoOrder[3] === 3
+    ){
+
+        const message =
+            document.getElementById("photoMessage");
+
+        if(message){
+
+            message.textContent =
+                "Perfect! The ancient picture has been restored.";
+
+        }
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME 3 — EASY MAURYA QUIZ
+========================================================= */
+
+function showMauryaQuiz(){
+
+    openModal(`
+
+        <div class="modal-icon">❓</div>
+
+        <h2 class="modal-title">
+            Easy Maurya Quiz
+        </h2>
+
+        <div class="modal-subtitle">
+            TEST YOUR HISTORY MEMORY
+        </div>
+
+        <div class="game-area">
+
+            <div class="game-question">
+
+                Who founded the Mauryan Empire?
+
+            </div>
+
+            <div class="choice-grid">
+
+                <button
+                    class="choice"
+                    onclick="answerMauryaQuiz('Chandragupta Maurya')">
+
+                    Chandragupta Maurya
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMauryaQuiz('Ashoka')">
+
+                    Ashoka
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMauryaQuiz('Bindusara')">
+
+                    Bindusara
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMauryaQuiz('Pushyamitra')">
+
+                    Pushyamitra Shunga
+
+                </button>
+
+            </div>
+
+            <div
+                id="gameMessage"
+                class="game-message">
+            </div>
+
+        </div>
+
+    `);
+
+}
+
+
+function answerMauryaQuiz(answer){
+
+    if(answer === "Chandragupta Maurya"){
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Correct! Chandragupta Maurya founded the Mauryan Empire.";
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }else{
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Try again! Think about the founder of the Mauryan Empire.";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME 4 — MALAVIKAGNIMITRAM
+========================================================= */
+
+function showMalavikagnimitram(){
+
+    openModal(`
+
+        <div class="modal-icon">🎭</div>
+
+        <h2 class="modal-title">
+            Malavikagnimitram
+        </h2>
+
+        <div class="modal-subtitle">
+            SHUNGA LITERATURE CHALLENGE
+        </div>
+
+        <div class="game-area">
+
+            <div class="game-question">
+
+                The Sanskrit play
+                <strong>Malavikagnimitram</strong>
+                is traditionally associated with which Shunga ruler?
+
+            </div>
+
+            <div class="choice-grid">
+
+                <button
+                    class="choice"
+                    onclick="answerMalavika('Agnimitra')">
+
+                    Agnimitra
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMalavika('Pushyamitra')">
+
+                    Pushyamitra
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMalavika('Brihadratha')">
+
+                    Brihadratha
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerMalavika('Ashoka')">
+
+                    Ashoka
+
+                </button>
+
+            </div>
+
+            <div
+                id="gameMessage"
+                class="game-message">
+            </div>
+
+        </div>
+
+    `);
+
+}
+
+
+function answerMalavika(answer){
+
+    if(answer === "Agnimitra"){
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Correct! Agnimitra is the central historical ruler in the play.";
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }else{
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Not quite. Remember the second Shunga ruler.";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME 5 — DYNASTY PUZZLE
+========================================================= */
+
+let dynastyChoices = {
+    first:"",
+    second:"",
+    third:""
+};
+
+
+function showDynastyPuzzle(){
+
+    dynastyChoices = {
+        first:"",
+        second:"",
+        third:""
+    };
+
+
+    openModal(`
+
+        <div class="modal-icon">🧩</div>
+
+        <h2 class="modal-title">
+            Dynasty Puzzle
+        </h2>
+
+        <div class="modal-subtitle">
+            PUT THE SHUNGA RULERS IN ORDER
+        </div>
+
+        <div class="game-area">
+
+            <div class="game-question">
+
+                Arrange these rulers from earlier to later:
+
+            </div>
+
+
+            <div style="margin-top:18px;">
+
+                <label>
+                    <strong>1st:</strong>
+                </label>
+
+                <select
+                    id="dynasty1"
+                    onchange="checkDynastyPuzzle()"
+                    style="width:100%;padding:12px;margin:6px 0 12px;">
+
+                    <option value="">
+                        Choose ruler
+                    </option>
+
+                    <option value="Pushyamitra">
+                        Pushyamitra Shunga
+                    </option>
+
+                    <option value="Agnimitra">
+                        Agnimitra
+                    </option>
+
+                    <option value="Later">
+                        Later Shunga rulers
+                    </option>
+
+                </select>
+
+
+                <label>
+                    <strong>2nd:</strong>
+                </label>
+
+                <select
+                    id="dynasty2"
+                    onchange="checkDynastyPuzzle()"
+                    style="width:100%;padding:12px;margin:6px 0 12px;">
+
+                    <option value="">
+                        Choose ruler
+                    </option>
+
+                    <option value="Pushyamitra">
+                        Pushyamitra Shunga
+                    </option>
+
+                    <option value="Agnimitra">
+                        Agnimitra
+                    </option>
+
+                    <option value="Later">
+                        Later Shunga rulers
+                    </option>
+
+                </select>
+
+
+                <label>
+                    <strong>3rd:</strong>
+                </label>
+
+                <select
+                    id="dynasty3"
+                    onchange="checkDynastyPuzzle()"
+                    style="width:100%;padding:12px;margin:6px 0 12px;">
+
+                    <option value="">
+                        Choose ruler
+                    </option>
+
+                    <option value="Pushyamitra">
+                        Pushyamitra Shunga
+                    </option>
+
+                    <option value="Agnimitra">
+                        Agnimitra
+                    </option>
+
+                    <option value="Later">
+                        Later Shunga rulers
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div
+                id="gameMessage"
+                class="game-message">
+            </div>
+
+        </div>
+
+    `);
+
+}
+
+
+function checkDynastyPuzzle(){
+
+    const a =
+        document.getElementById("dynasty1").value;
+
+    const b =
+        document.getElementById("dynasty2").value;
+
+    const c =
+        document.getElementById("dynasty3").value;
+
+
+    if(!a || !b || !c){
+        return;
+    }
+
+
+    if(
+        a === "Pushyamitra" &&
+        b === "Agnimitra" &&
+        c === "Later"
+    ){
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Excellent! The Shunga sequence is correct.";
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }else{
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Not quite. Think: founder → second ruler → later rulers.";
+
+    }
+
+}
+
+
+/* =========================================================
+   GAME 6 — BATTLE & KINGDOM DEFENSE
+========================================================= */
+
+function showBattleDefense(){
+
+    openModal(`
+
+        <div class="modal-icon">🛡️</div>
+
+        <h2 class="modal-title">
+            Battle & Kingdom Defense
+        </h2>
+
+        <div class="modal-subtitle">
+            SHUNGA STRATEGY CHALLENGE
+        </div>
+
+        <div class="game-area">
+
+            <div class="game-question">
+
+                Your kingdom is facing a possible attack.
+                Which two things should you prioritise
+                to prepare your defence?
+
+            </div>
+
+            <div class="choice-grid">
+
+                <button
+                    class="choice"
+                    onclick="answerDefense('army')">
+
+                    ⚔️ Army + Supplies
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDefense('festival')">
+
+                    🎭 Festival + Music
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDefense('paint')">
+
+                    🎨 Paint + Decoration
+
+                </button>
+
+                <button
+                    class="choice"
+                    onclick="answerDefense('jewels')">
+
+                    💎 Jewels + Luxury
+
+                </button>
+
+            </div>
+
+            <div
+                id="gameMessage"
+                class="game-message">
+            </div>
+
+        </div>
+
+    `);
+
+}
+
+
+function answerDefense(answer){
+
+    if(answer === "army"){
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Correct! A kingdom needs an organised army and supplies for defence.";
+
+        setTimeout(()=>{
+
+            completeMiniGame();
+
+        },700);
+
+    }else{
+
+        document.getElementById("gameMessage")
+            .textContent =
+            "Think like a ruler protecting a kingdom. What would defenders need?";
+
+    }
+
+}
+
+
+/* =========================================================
+   MODAL FUNCTIONS
+========================================================= */
+
+function openModal(content){
+
+    document.getElementById("modalBody")
+        .innerHTML = content;
+
+    document.getElementById("modal")
+        .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document.getElementById("modal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   END GAME
+========================================================= */
+
+function endGame(){
+
+    gameOver = true;
+    moving = false;
+
+    document.getElementById("rollButton")
+        .disabled = true;
+
+    updateUI();
+
+
+    const p1 = players[0];
+    const p2 = players[1];
+
+
+    let resultHTML = "";
+
+
+    if(p1.coins > p2.coins){
+
+        resultHTML = `
+
+            <div class="reward-box">
+
+                🏆
+                <br>
+
+                <strong>
+                    ${safe(p1.name)}
+                </strong>
+
+                <br>
+
+                WINS THE ANCIENT TREASURE!
+
+                <br><br>
+
+                🪙 ${p1.coins} coins
+
+            </div>
+
+        `;
+
+    }
+
+    else if(p2.coins > p1.coins){
+
+        resultHTML = `
+
+            <div class="reward-box">
+
+                🏆
+                <br>
+
+                <strong>
+                    ${safe(p2.name)}
+                </strong>
+
+                <br>
+
+                WINS THE ANCIENT TREASURE!
+
+                <br><br>
+
+                🪙 ${p2.coins} coins
+
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        resultHTML = `
+
+            <div class="reward-box">
+
+                🤝
+                <br>
+
+                IT'S A TIE!
+
+                <br><br>
+
+                Both explorers collected
+                <strong>${p1.coins} coins</strong>.
+
+            </div>
+
+        `;
+
+    }
+
+
+    openModal(`
+
+        <div class="modal-icon">
+            🏆
+        </div>
+
+        <h2 class="modal-title">
+            The Ancient Adventure Is Complete
+        </h2>
+
+        <div class="modal-subtitle">
+            BOTH EXPLORERS REACHED BOX 32
+        </div>
+
+        <div class="modal-content">
+
+            <p style="text-align:center;line-height:1.8;">
+
+                <strong>${safe(p1.name)}</strong>
+                🐘 —
+                🪙 ${p1.coins} coins
+
+                <br>
+
+                <strong>${safe(p2.name)}</strong>
+                🦚 —
+                🪙 ${p2.coins} coins
+
+            </p>
+
+            <br>
+
+            <p style="text-align:center;">
+                The final result is decided by the
+                <strong>ancient coins collected throughout the game.</strong>
+            </p>
+
+        </div>
+
+        ${resultHTML}
+
+        <div class="modal-actions">
+
+            <button
+                class="modal-button"
+                onclick="playAgain()">
+
+                PLAY AGAIN
+
+            </button>
+
+        </div>
+
+    `);
+
+}
+
+
+/* =========================================================
+   PLAY AGAIN
+========================================================= */
+
+function playAgain(){
+
+    players[0].position = 1;
+    players[1].position = 1;
+
+    players[0].coins = 0;
+    players[1].coins = 0;
+
+    players[0].finished = false;
+    players[1].finished = false;
+
+    currentPlayer = 0;
+    moving = false;
+    gameOver = false;
+
+    moreViewed.clear();
+    landingRewards.clear();
+    completedGames.clear();
+
+    createBoardData();
+
+    document.getElementById("rollButton")
+        .disabled = false;
+
+    document.getElementById("dice")
+        .textContent = "⚀";
+
+    document.getElementById("status")
+        .textContent =
+        `${players[0].name}'s turn — roll the dice.`;
+
+    closeModal();
+
+    renderBoard();
+    updateUI();
+
+}
+
+
+/* =========================================================
+   ENTER KEY SUPPORT ON START SCREEN
+========================================================= */
+
+document.getElementById("player1Name")
+    .addEventListener("keydown",function(event){
+
+        if(event.key === "Enter"){
+
+            document.getElementById("player2Name")
+                .focus();
+
+        }
+
+    });
+
+
+document.getElementById("player2Name")
+    .addEventListener("keydown",function(event){
+
+        if(event.key === "Enter"){
+
+            beginGame();
+
+        }
+
+    });
+
+
+/* =========================================================
+   INITIAL SETUP
+========================================================= */
+
+createBoardData();
+
+</script>
+
+</body>
+</html>
